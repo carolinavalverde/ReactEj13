@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Swal from 'sweetalert2';
+import React, { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Swal from "sweetalert2";
 
 const App = () => {
-  const [location, setLocation] = useState('');
-  const [country, setCountry] = useState('Argentina');
+  const [location, setLocation] = useState("");
+  const [country, setCountry] = useState("Argentina");
   const [weather, setWeather] = useState(null);
 
   const handleConsult = async () => {
     try {
-      const apiKey = '80ad140fc5f4f5c12f8f34a2c12ee19d'; 
+      const apiKey = "80ad140fc5f4f5c12f8f34a2c12ee19d";
       const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${location},${country}&appid=${apiKey}`;
       const response = await fetch(apiUrl);
       const data = await response.json();
@@ -21,35 +21,35 @@ const App = () => {
       }
     } catch (error) {
       Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: error.message || 'Error al consultar el clima',
+        icon: "error",
+        title: "Error",
+        text: error.message || "Error al consultar el clima",
       });
       setWeather(null);
     }
   };
 
   return (
-    <div className="container mt-5">
+    <section className="container rounded containerClima mt-5 col-md-4 col-sm-8 col-lg-4 p-4">
       <div className="row">
-        <div className="col-md-6 offset-md-3">
-          <h1 className="text-center mb-4">Consulta del Clima</h1>
-          <div className="form-group">
-            <label htmlFor="location">Ubicación:</label>
+        <div className="justify-content-center">
+          <h1 className="text-center mb-4">Clima en tu zona</h1>
+          <div className="form-group my-3 ">
+            <label htmlFor="location">Ubicación</label>
             <input
               type="text"
               id="location"
-              className="form-control"
+              className="form-control my-2"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               placeholder="Escribe la ubicación"
             />
           </div>
-          <div className="form-group">
+          <div className="form-group my-3">
             <label htmlFor="country">País:</label>
             <select
               id="country"
-              className="form-control"
+              className="form-control my-2"
               value={country}
               onChange={(e) => setCountry(e.target.value)}
             >
@@ -61,20 +61,26 @@ const App = () => {
               <option value="Otro">Otro</option>
             </select>
           </div>
-          <button className="btn btn-primary btn-block" onClick={handleConsult}>
-            Consultar Clima
-          </button>
+          <div className="d-flex justify-content-center my-2">
+            <button
+              className="btn btn-success btn-block p-3"
+              onClick={handleConsult}
+            >
+              Consultar Clima
+            </button>
+          </div>
           {weather && (
-            <div className="mt-4">
-              <h2>Información del Clima</h2>
-              <p>Ubicación: {weather.name}</p>
-              <p>Temperatura: {weather.main.temp}°C</p>
-              <p>Descripción: {weather.weather[0].description}</p>
-            </div>
+            <section className="my-4 card bgCardClima p-5 text-center">
+              <div className="d-flex justify-content-center row">
+                <p className="fw-bold display-6 text-uppercase">{weather.name}</p>
+                <p>{weather.main.temp}°C</p>
+                <p className="text-uppercase">{weather.weather[0].description}</p>
+              </div>
+            </section>
           )}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -1,0 +1,13 @@
+body {
+    background-color: #37a1de;   
+}
+
+.containerClima {
+  background-color: #0093e9;
+  background-image: linear-gradient(160deg, #0093e9 0%, #80d0c7 100%);
+}
+
+.bgCardClima {
+    background-color: #436c3d;
+    background-image: linear-gradient(160deg, #418b37 0%, #95a295 100%);    
+}
