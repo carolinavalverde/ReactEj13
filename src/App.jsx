@@ -10,7 +10,7 @@ const App = () => {
   const handleConsult = async () => {
     try {
       const apiKey = "80ad140fc5f4f5c12f8f34a2c12ee19d";
-      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${location},${country}&appid=${apiKey}`;
+      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${location},${country}&appid=${apiKey}&lang=es&units=metric`;
       const response = await fetch(apiUrl);
       const data = await response.json();
 
@@ -72,8 +72,8 @@ const App = () => {
           {weather && (
             <section className="my-4 card bgCardClima p-5 text-center">
               <div className="d-flex justify-content-center row">
-                <p className="fw-bold display-6 text-uppercase">{weather.name}</p>
-                <p>{weather.main.temp}°C</p>
+                <p className="fw-bold display-7 text-uppercase">{weather.name}</p>
+                <p className="fw-bold display-3">{Math.floor(weather.main.temp)}°C</p>
                 <p className="text-uppercase">{weather.weather[0].description}</p>
               </div>
             </section>
