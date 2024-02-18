@@ -1,127 +1,81 @@
-import { LoadingButton } from "@mui/lab";
-import { Box, Container, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Swal from 'sweetalert2';
 
-const API_WEATHER = `http://api.weatherapi.com/v1/current.json?key=${
-  import.meta.env.VITE_API_KEY
-}&lang=es&q=`;
+const App = () => {
+  const [location, setLocation] = useState('');
+  const [country, setCountry] = useState('Argentina');
+  const [weather, setWeather] = useState(null);
 
-export default function App() {
-  const [city, setCity] = useState("");
-  const [error, setError] = useState({
-    error: false,
-    message: "",
-  });
-  const [loading, setLoading] = useState(false);
-
-  const [weather, setWeather] = useState({
-    city: "",
-    country: "",
-    temperature: 0,
-    condition: "",
-    conditionText: "",
-    icon: "",
-  });
-
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    setError({ error: false, message: "" });
-    setLoading(true);
-
+  const handleConsult = async () => {
     try {
-      if (!city.trim()) throw { message: "El campo ciudad es obligatorio" };
+      const apiKey = '80ad140fc5f4f5c12f8f34a2c12ee19d'; 
+      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${location},${country}&appid=${apiKey}`;
+      const response = await fetch(apiUrl);
+      const data = await response.json();
 
-      const res = await fetch(API_WEATHER + city);
-      const data = await res.json();
-
-      if (data.error) {
-        throw { message: data.error.message };
+      if (response.ok) {
+        setWeather(data);
+      } else {
+        throw new Error(data.message);
       }
-
-      console.log(data);
-
-      setWeather({
-        city: data.location.name,
-        country: data.location.country,
-        temperature: data.current.temp_c,
-        condition: data.current.condition.code,
-        conditionText: data.current.condition.text,
-        icon: data.current.condition.icon,
-      });
     } catch (error) {
-      console.log(error);
-      setError({ error: true, message: error.message });
-    } finally {
-      setLoading(false);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error.message || 'Error al consultar el clima',
+      });
+      setWeather(null);
     }
   };
 
   return (
-    <Container maxWidth="xs" sx={{ mt: 2 }}>
-      <Typography variant="h3" component="h1" align="center" gutterBottom>
-        Weather App
-      </Typography>
-      <Box
-        sx={{ display: "grid", gap: 2 }}
-        component="form"
-        autoComplete="off"
-        onSubmit={onSubmit}
-      >
-        <TextField
-          id="city"
-          label="Ciudad"
-          variant="outlined"
-          size="small"
-          required
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          error={error.error}
-          helperText={error.message}
-        />
-
-        <LoadingButton
-          type="submit"
-          variant="contained"
-          loading={loading}
-          loadingIndicator="Buscando..."
-        >
-          Buscar
-        </LoadingButton>
-      </Box>
-
-      {weather.city && (
-        <Box
-          sx={{
-            mt: 2,
-            display: "grid",
-            gap: 2,
-            textAlign: "center",
-          }}
-        >
-          <Typography variant="h4" component="h2">
-            {weather.city}, {weather.country}
-          </Typography>
-          <Box
-            component="img"
-            alt={weather.conditionText}
-            src={weather.icon}
-            sx={{ margin: "0 auto" }}
-          />
-          <Typography variant="h5" component="h3">
-            {weather.temperature} °C
-          </Typography>
-          <Typography variant="h6" component="h4">
-            {weather.conditionText}
-          </Typography>
-        </Box>
-      )}
-
-      <Typography textAlign="center" sx={{ mt: 2, fontSize: "10px" }}>
-        Powered by:{" "}
-        <a href="https://www.weatherapi.com/" title="Weather API">
-          WeatherAPI.com
-        </a>
-      </Typography>
-    </Container>
+    <div className="container mt-5">
+      <div className="row">
+        <div className="col-md-6 offset-md-3">
+          <h1 className="text-center mb-4">Consulta del Clima</h1>
+          <div className="form-group">
+            <label htmlFor="location">Ubicación:</label>
+            <input
+              type="text"
+              id="location"
+              className="form-control"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              placeholder="Escribe la ubicación"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="country">País:</label>
+            <select
+              id="country"
+              className="form-control"
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+            >
+              <option value="Argentina">Argentina</option>
+              <option value="Argentina">EEUU</option>
+              <option value="Argentina">Mexico</option>
+              <option value="Argentina">Chile</option>
+              <option value="Argentina">España</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+          <button className="btn btn-primary btn-block" onClick={handleConsult}>
+            Consultar Clima
+          </button>
+          {weather && (
+            <div className="mt-4">
+              <h2>Información del Clima</h2>
+              <p>Ubicación: {weather.name}</p>
+              <p>Temperatura: {weather.main.temp}°C</p>
+              <p>Descripción: {weather.weather[0].description}</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
-}
+};
+
+export default App;
