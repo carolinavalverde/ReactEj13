@@ -1,22 +1,20 @@
 ## **Aplicación del Clima**
 
 ## 1. Descripción
-Esta es una aplicación web desarrollada con React y Bootstrap que consume la API proporcionada por News API para mostrar noticias de diversas categorías.
+Esta es una aplicación web desarrollada con React y Bootstrap que consume la API proporcionada por News API para mostrar el clima en lugares.
 
 ## 2. Características Principales
-Seleccionar categorías de noticias desde el menú desplegable.
-Cargar noticias correspondientes a la categoría seleccionada.
-Ver noticias completas haciendo clic en el botón correspondiente en cada tarjeta de noticia.
+Escribir el lugar donde se encuentra y seleccionar el pais. Al hacerlo se muestra el clima y caracteristicas del mismo.
 
 ## 3. Despliegue
 
-La aplicación ColorPalette está desplegada y disponible en: 
-https://webClima-13.netlify.app/
+La aplicación está desplegada y disponible en: 
+https://webclima-13.netlify.app/
 
 ## 4. Tecnologías Utilizadas
 React
 Bootstrap
-Axios (para realizar peticiones HTTP a la API)
+SweetAlert
 
 ## 5. Instalación y Uso
 Clona el repositorio: git clone https://github.com/carolinavalverde/ReactEj13
